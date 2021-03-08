@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
+import "./Row.css";
 
 interface Props {
   title: string;
   fetchUrl: string;
-  isLargeRow: boolean;
+  isLargeRow?: boolean;
 }
 const Row = ({ title, fetchUrl, isLargeRow = false }: Props) => {
-  const [movies, setMovies] = useState([]);
+  const [movies, setMovies] = useState<any>([]);
 
   const baseURL = "https://image.tmdb.org/t/p/original/";
   useEffect(() => {
@@ -19,19 +20,27 @@ const Row = ({ title, fetchUrl, isLargeRow = false }: Props) => {
       return request;
     }
     fetchData();
-  }, [fetchUrl]);
+  }, [fetchUrl, movies]);
   console.log(movies);
   return (
     <div className="row">
       <h2>{title}</h2>
-      {movies.map((movie: string) => (
-        <img
-          src={`${baseURL}${
-            isLargeRow ? movie.poster_path : movie.backdrop_path
-          }`}
-          alt={movie.name}
-        />
-      ))}
+      <div className="row__posters">
+        {movies.map((m: any) => {
+          if (m.poster_path || m.backdrop_path) {
+            return (
+              <img
+                className={`row__poster ${isLargeRow && "row__posterLarge"}`}
+                src={`${baseURL}${
+                  isLargeRow ? m.poster_path : m.backdrop_path
+                }`}
+                alt={m.name}
+                key={m.id}
+              />
+            );
+          }
+        })}
+      </div>
     </div>
   );
 };

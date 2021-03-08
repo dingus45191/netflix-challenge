@@ -3,22 +3,24 @@ import "./Navbar.css";
 
 export const Navbar = () => {
   const [show, handleShow] = useState(false);
-  const transitionNavbar = () => {
-    if (window.screenY > 100) {
-      handleShow(true);
-    } else {
-      handleShow(false);
-    }
-  };
+  // const transitionNavbar = () => {
+  //   if (window.screenY > 100) {
+  //     handleShow(true);
+  //   } else {
+  //     handleShow(false);
+  //   }
+  // };
   useEffect(() => {
-    window.addEventListener("scroll", transitionNavbar);
-    return () => {
-      window.removeEventListener("scroll", transitionNavbar);
-    };
-  }, []);
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 100) {
+        handleShow(true);
+      } else handleShow(false);
+    });
+    return () => {};
+  }, [show]);
   return (
     <div className={"navbar"}>
-      <div className={`nav ${show && "nav__black"}`}>
+      <div className={`nav ${show === true && "nav__black"}`}>
         <div className="nav__contents">
           <img
             src="https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.nedpoulter.com%2Fwp-content%2Fuploads%2F2015%2F01%2FNetflix-logo.png&f=1&nofb=1"
